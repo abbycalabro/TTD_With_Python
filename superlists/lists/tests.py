@@ -13,8 +13,20 @@ class HomePageTest(TestCase):
         request = HttpRequest()
         response = home_page(request)
         expected_html = render_to_string('home.html')
-        self.assertEqual(response.content.decode(), expected_html)
+        self.assertTrue(response.content.decode(), expected_html)
 
-
-
+    def test_home_page_can_save_a_POST_request(self):
+        #spacing uses Setup, Exercise, Assert structure
+        request = HttpRequest()
+        request.method = 'POST'
+        request.POST['item_text'] = 'A new list item'
+        
+        response = home_page(request)
+        
+        self.assertIn('A new list item', response.content.decode())
+        expected_html = render_to_string(
+            'home.html',
+            {'new_item_text':  'A new list item'} #maps var name to value
+        )
+        self.assertTrue(response.content.decode(), expected_html)
 
