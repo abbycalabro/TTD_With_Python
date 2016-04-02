@@ -1,3 +1,4 @@
+from lists.models import Item
 from django.template.loader import render_to_string
 from django.core.urlresolvers import resolve
 from django.test import TestCase
@@ -26,7 +27,24 @@ class HomePageTest(TestCase):
         self.assertIn('A new list item', response.content.decode())
         expected_html = render_to_string(
             'home.html',
-            {'new_item_text':  'A new list item'} #maps var name to value
+            {'new_item_text': 'A new list item'} #map var name to value
         )
         self.assertTrue(response.content.decode(), expected_html)
 
+class ItemModelTest(TestCase):
+    def test_saving_and_retrieving_items(self):
+        first_item = Item()
+        first_item.text = 'The first (ever) list item'
+        first_item.save()
+
+        second_item = Item()
+        second_item.text = 'Item the second'
+        second_item.save()
+
+        saved_items = Item.objects.all() #Django API for querying db for all records in Item table
+        self.assertEqual(saved_items.count(), 2)
+
+        first_saved_item = saved_items[0]
+        second_saved_item = saved_items[1]
+        self.assertEqual(first_saved_item.text, 'The first (ever) list item')
+        self.assertEqual(second_saved_item.text, 'Item the second')
