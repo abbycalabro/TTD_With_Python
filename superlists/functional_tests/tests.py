@@ -79,7 +79,6 @@ class NewVisitorTest(LiveServerTestCase):
         #Satisfied, they both go back to sleep
 
         #Abby sees that the site has generated a unique URL for her - there is text explaining this
-        self.fail('Finish the test!')
 
         #She visits that URL, and her to-do list is still there
 
